@@ -1,4 +1,3 @@
-
 import os
 import logging
 import streamlit as st
@@ -25,7 +24,12 @@ with st.sidebar:
 
     st.write("You selected", theme)
 
-    exercise = con.execute(f"SELECT * FROM memory_state_df WHERE theme = '{theme}'").df().sort_values("last_reviewed").reset_index()
+    exercise = (
+        con.execute(f"SELECT * FROM memory_state_df WHERE theme = '{theme}'")
+        .df()
+        .sort_values("last_reviewed")
+        .reset_index()
+    )
     st.write(exercise)
 
     exercise_name = exercise.loc[0, "exercise_name"]
