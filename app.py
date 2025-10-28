@@ -14,6 +14,28 @@ if "exercises_sql_tables.duckdb" not in os.listdir("data"):
 
 con = duckdb.connect(database="data/exercises_sql_tables.duckdb", read_only=False)
 
+
+def check_users_solution(user_query: str) -> None:
+    """
+    Checks that user SQL query is correct by:
+    1: Checking the columns
+    2: Checking the values
+    :param user_query: a string containing the query written by the user
+    """
+    result = con.execute(query).df()
+    st.dataframe(result)
+    try:
+        result = result[solution_df.columns]
+        st.dataframe(result.compare(solution_df))
+    except KeyError as e:
+        st.write("Some columns are missing")
+    n_lines_difference = result.shape[0] - solution_df.shape[0]
+    if n_lines_difference != 0:
+        st.write(
+            f"result has a {n_lines_difference} lines difference with the solution_df"
+        )
+
+
 with st.sidebar:
     available_theme_df = con.execute("SELECT DISTINCT theme FROM memory_state_df").df()
     theme = st.selectbox(
@@ -44,20 +66,7 @@ st.header("Enter your code:")
 query = st.text_area(label="Your SQL code here", key="user_input")
 
 if query:
-    result = con.execute(query).df()
-    st.dataframe(result)
-
-    try:
-        result = result[solution_df.columns]
-        st.dataframe(result.compare(solution_df))
-    except KeyError as e:
-        st.write("Some columns are missing")
-
-    n_lines_difference = result.shape[0] - solution_df.shape[0]
-    if n_lines_difference != 0:
-        st.write(
-            f"result has a {n_lines_difference} lines difference with the solution_df"
-        )
+    check_users_solution(query)
 
 tab2, tab3 = st.tabs(["Tables", "Solution"])
 
