@@ -15,6 +15,9 @@ data = {
         "window_functions",
         "window_functions",
         "window_functions",
+        "window_functions",
+        "window_functions",
+        "window_functions",
     ],
     "exercise_name": [
         "beverages_and_food",
@@ -22,6 +25,9 @@ data = {
         "window_functions_1",
         "window_functions_2",
         "window_functions_3",
+        "window_functions_4",
+        "window_functions_5",
+        "window_functions_6",
     ],
     "tables": [
         ["beverages", "food_items"],
@@ -29,9 +35,15 @@ data = {
         ["furniture"],
         ["furniture"],
         ["furniture"],
+        ["capteur_a_retrail"],
+        ["capteur_a_retrail"],
+        ["capteur_a_retrail"],
     ],
     "last_reviewed": [
         "1980-01-01",
+        "1970-01-01",
+        "1970-01-01",
+        "1970-01-01",
         "1970-01-01",
         "1970-01-01",
         "1970-01-01",
@@ -43,6 +55,9 @@ data = {
         "Display the total weight in a new column",
         "Display the running total weight in a new column",
         "Display the moving average weight in a new column",
+        "Display the total visitor in a new column",
+        "Display the running total visitor in a new column",
+        "Display the moving average visitor for the last 7 days in a new column",
     ],
 }
 memory_state_df = pd.DataFrame(data)
@@ -107,5 +122,10 @@ furniture = [
 ]
 furniture = pd.DataFrame(furniture, columns=["category", "item", "weight"])
 con.execute("CREATE TABLE IF NOT EXISTS furniture AS SELECT * FROM furniture")
+
+capteur_a_retrail = pd.read_csv("data_csv/capteur_a_retrail.csv")
+con.execute(
+    "CREATE TABLE IF NOT EXISTS capteur_a_retrail AS SELECT * FROM capteur_a_retrail"
+)
 
 con.close()
