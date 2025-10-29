@@ -9,10 +9,41 @@ con = duckdb.connect(database="data/exercises_sql_tables.duckdb", read_only=Fals
 # ------------------------------------------------------------
 
 data = {
-    "theme": ["cross_joins", "cross_joins"],
-    "exercise_name": ["beverages_and_food", "sizes_and_trademarks"],
-    "tables": [["beverages", "food_items"], ["sizes", "trademarks"]],
-    "last_reviewed": ["1980-01-01", "1970-01-01"],
+    "theme": [
+        "cross_joins",
+        "cross_joins",
+        "window_functions",
+        "window_functions",
+        "window_functions",
+    ],
+    "exercise_name": [
+        "beverages_and_food",
+        "sizes_and_trademarks",
+        "window_functions_1",
+        "window_functions_2",
+        "window_functions_3",
+    ],
+    "tables": [
+        ["beverages", "food_items"],
+        ["sizes", "trademarks"],
+        ["furniture"],
+        ["furniture"],
+        ["furniture"],
+    ],
+    "last_reviewed": [
+        "1980-01-01",
+        "1970-01-01",
+        "1970-01-01",
+        "1970-01-01",
+        "1970-01-01",
+    ],
+    "question": [
+        "question 1",
+        "question 2",
+        "Display the total weight in a new column",
+        "Display the running total weight in a new column",
+        "Display the moving average weight in a new column",
+    ],
 }
 memory_state_df = pd.DataFrame(data)
 con.execute(
@@ -59,5 +90,22 @@ Lewis
 """
 trademarks = pd.read_csv(io.StringIO(trademarks))
 con.execute("CREATE TABLE IF NOT EXISTS trademarks AS SELECT * FROM trademarks")
+
+# ------------------------------------------------------------
+# WINDOW FUNCTIONS EXERCISES
+# ------------------------------------------------------------
+furniture = [
+    ("Chairs", "Chair 1", 5.2),
+    ("Chairs", "Chair 2", 4.5),
+    ("Chairs", "Chair 3", 6.8),
+    ("Sofas", "Sofa 1", 25.5),
+    ("Sofas", "Sofa 2", 20.3),
+    ("Sofas", "Sofa 3", 30.0),
+    ("Tables", "Table 1", 15.0),
+    ("Tables", "Table 2", 12.5),
+    ("Tables", "Table 3", 18.2),
+]
+furniture = pd.DataFrame(furniture, columns=["category", "item", "weight"])
+con.execute("CREATE TABLE IF NOT EXISTS furniture AS SELECT * FROM furniture")
 
 con.close()

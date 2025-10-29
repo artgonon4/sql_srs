@@ -86,6 +86,13 @@ if st.button("Reset"):
 tab2, tab3 = st.tabs(["Tables", "Solution"])
 
 with tab2:
+    st.write(
+        con.execute(
+            f"SELECT question FROM memory_state_df WHERE exercise_name = '{exercise_name}'"
+        )
+        .df()
+        .loc[0, "question"]
+    )
     exercise_tables = exercise.loc[0, "tables"]
     for table in exercise_tables:
         st.write(f"table: {table}")
